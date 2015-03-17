@@ -1,0 +1,119 @@
+
+#include<iostream>  
+using namespace std; 
+
+int main()
+{
+
+	int e1 = 0, e2 = 0, x1 = 0, x2 = 0;
+	int a1[] = {0};
+	int a2[] = {0};
+	int t1[] = {0};
+	int t2[] = {0};
+	int f1[] = { 0 }, f2[] = { 0 }, L1[] = { 0 }, L2[] = { 0 }, L;
+	int length1, length2;
+
+	cout << "Enter the length of Line 1: \n";
+	cin >> length1;
+	cout << "Enter the length of Line 2: \n";
+	cin >> length2;
+
+	cout << "Enter the entry time of Line 1 and Line 2: \n";
+	cin >> e1;  
+	cin >> e2;
+
+	cout << "Enter the exit time of Line 1 and Line 2: \n";
+	cin >> x1;  
+	cin >> x2;
+
+	cout << "Enter the processing time of each station on Line 1: \n";
+	for (int i = 0; i <= length1; i++)
+	{
+		cin >> a1[i];
+	}
+
+	cout << "Enter the processing time of each station on Line 2: \n";
+	for (int i = 0; i <= length2; i++)
+	{
+		cin >> a2[i];
+	}
+
+	cout << "Enter the shifting cost of each station on Line 1: \n";
+	for (int i = 0; i <= length1-2; i++)
+	{
+		cin >> t1[i];
+	}
+
+	cout << "Enter the shifting cost of each station on Line 2: \n";
+	for (int i = 0; i <= length2 - 2; i++)
+	{
+		cin >> t2[i];
+	}
+
+	/////////////////////////////////////////////////////////////////////
+
+
+	f1[1] = e1 + a1[1];
+	f2[1] = e2 + a2[1];
+	int i;
+	for (i = 2; i<length1; i++)
+	{
+		if (f1[i - 1] + a1[i]<f2[i - 1] + a1[i] + t2[i - 1])
+		{
+			f1[i] = f1[i - 1] + a1[i];
+			L1[i] = 1;
+		}
+		else
+		{
+			f1[i] = f2[i - 1] + a1[i] + t2[i - 1];
+			L1[i] = 2;
+		}
+		if (f2[i - 1] + a2[i]<f1[i - 1] + a2[i] + t1[i - 1])
+		{
+			f2[i] = f2[i - 1] + a2[i];
+			L2[i] = 2;
+		}
+		else
+		{
+			f2[i] = f1[i - 1] + a2[i] + t1[i - 1];
+			L2[i] = 1;
+		}
+	}
+	  
+	if (f1[length1 - 1] + x1<f2[length2 - 1] + x2)
+	{
+		f1[length1] = f1[length1 - 1] + x1;
+		L = 1;
+	}
+	else
+	{
+		f1[length2] = f2[length2 - 1] + x2;
+		L = 2;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////
+
+
+	int x = L;
+	cout << "The fast time is : " << f1[length1 + 1] << endl;
+	cout << "The station : " << length1 << " is on line: " << x << endl;
+
+	for (int j = length2; j >= 2; j--)
+	{
+		if (x == 1)
+		{
+			x = L1[j];
+		}
+		else
+		{
+			x = L2[j];
+		}
+		cout << "The station : " << j - 1 << " is on line: " << x << endl;
+	}
+
+	int a;
+	cin >> a;
+
+	return 0;
+}
